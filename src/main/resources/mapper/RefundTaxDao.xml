@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolk1ng.mapper.RefundTaxMapper">
+
+    <resultMap type="com.coolk1ng.entity.RefundTax" id="RefundTaxMap">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="projectId" column="PROJECT_ID" jdbcType="INTEGER"/>
+        <result property="brandAttribute" column="BRAND_ATTRIBUTE" jdbcType="VARCHAR"/>
+        <result property="demandName" column="DEMAND_NAME" jdbcType="VARCHAR"/>
+        <result property="supplier" column="SUPPLIER" jdbcType="VARCHAR"/>
+        <result property="receiptName" column="RECEIPT_NAME" jdbcType="VARCHAR"/>
+        <result property="invoiceAmount" column="INVOICE_AMOUNT" jdbcType="VARCHAR"/>
+        <result property="invoiceTime" column="INVOICE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="taxRate" column="TAX_RATE" jdbcType="INTEGER"/>
+        <result property="theoryRefundTax" column="THEORY_REFUND_TAX" jdbcType="VARCHAR"/>
+        <result property="actualRefundTax" column="ACTUAL_REFUND_TAX" jdbcType="VARCHAR"/>
+        <result property="canRefundTax" column="CAN_REFUND_TAX" jdbcType="INTEGER"/>
+        <result property="state" column="STATE" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" parameterType="com.coolk1ng.pojo.entity.RefundTax"
+            resultType="com.coolk1ng.pojo.entity.RefundTax">
+        select ID,
+               PROJECT_ID,
+               BRAND_ATTRIBUTE,
+               DEMAND_NAME,
+               SUPPLIER,
+               RECEIPT_NAME,
+               INVOICE_AMOUNT,
+               INVOICE_TIME,
+               TAX_RATE,
+               THEORY_REFUND_TAX,
+               ACTUAL_REFUND_TAX,
+               CAN_REFUND_TAX,
+               STATE
+        from refund_tax
+        where ID = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="getRefundTaxList" resultType="com.coolk1ng.pojo.entity.RefundTax"
+            parameterType="com.coolk1ng.pojo.entity.RefundTax">
+        select
+        ID, PROJECT_ID, BRAND_ATTRIBUTE, DEMAND_NAME, SUPPLIER, RECEIPT_NAME, INVOICE_AMOUNT, INVOICE_TIME, TAX_RATE,
+        THEORY_REFUND_TAX, ACTUAL_REFUND_TAX, CAN_REFUND_TAX, STATE
+        from refund_tax
+        <where>
+            <if test="projectId != null">
+                and PROJECT_ID = #{projectId}
+            </if>
+            <if test="supplier != null and supplier != ''">
+                and SUPPLIER LIKE CONCAT('%',#{supplier},'%')
+            </if>
+            <if test="invoiceTimeStart != null">
+                and INVOICE_TIME <![CDATA[>]]>  #{invoiceTime}
+            </if>
+            <if test="invoiceTimeEnd != null">
+                and INVOICE_TIME <![CDATA[<]]>  #{invoiceTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="com.coolk1ng.pojo.entity.RefundTax">
+        insert into refund_tax(PROJECT_ID, BRAND_ATTRIBUTE, DEMAND_NAME, SUPPLIER, RECEIPT_NAME, INVOICE_AMOUNT,
+                               INVOICE_TIME, TAX_RATE, THEORY_REFUND_TAX, CAN_REFUND_TAX)
+        values (#{projectId}, #{brandAttribute}, #{demandName}, #{supplier}, #{receiptName}, #{invoiceAmount},
+                #{invoiceTime}, #{taxRate}, #{theoryRefundTax}, #{canRefundTax})
+    </insert>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from refund_tax
+        where ID = #{id}
+    </delete>
+
+    <select id="getRefundTaxByIds" resultType="com.coolk1ng.pojo.entity.RefundTax">
+        SELECT * FROM refund_tax
+        <where>
+            <if test="ids != null">
+                ID IN
+                <foreach collection="list" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+</mapper>
+

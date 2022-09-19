@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolk1ng.mapper.WarehouseMapper">
+
+    <select id="getWarehouseList" resultType="com.coolk1ng.pojo.vo.WarehouseVO"
+            parameterType="com.coolk1ng.pojo.dto.WarehouseDTO">
+        SELECT a.GOODS_NAME, a.QUANTITY, b.WARE_NAME
+        FROM warehouse_order a
+        LEFT JOIN warehouse_info b ON a.WAREHOUSE = b.ID
+        <where>
+            <if test="goodsName != null and goodsName != '' ">
+                and GOOD_NAME LIKE CONCAT('%',#{goodsName},'%')
+            </if>
+            <if test="warehouse != null and warehouse != ''">
+                and WAREHOUSE = #{warehouse}
+            </if>
+        </where>
+        ORDER BY a.QUANTITY DESC
+    </select>
+
+    <!--新增仓库订单-->
+    <insert id="saveWarehouseOrder" keyProperty="id" useGeneratedKeys="true"
+            parameterType="com.coolk1ng.pojo.dto.WarehouseDTO">
+        INSERT INTO warehouse_order(GOODS_NAME, WAREHOUSE, QUANTITY)
+        VALUES (#{goodsName}, #{warehouse}, #{quantity})
+    </insert>
+
+    <!--新增仓库数据-->
+    <insert id="saveWarehouseInfo" keyProperty="id" useGeneratedKeys="true"
+            parameterType="com.coolk1ng.pojo.dto.WarehouseDTO">
+        INSERT INTO warehouse_info(WARE_NAME)
+        VALUES (#{wareName})
+    </insert>
+
+    <update id="updateWarehouseOrder" parameterType="com.coolk1ng.pojo.dto.WarehouseDTO">
+        update warehouse_order
+        <set>
+            <if test="goodsName != null and goodsName != ''">
+                GOODS_NAME = #{goodsName},
+            </if>
+            <if test="warehouse != null">
+                WAREHOUSE = #{warehouse},
+            </if>
+            <if test="quantity != null">
+                QUANTITY = #{quantity},
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <update id="updateWarehouseInfo" parameterType="com.coolk1ng.pojo.dto.WarehouseDTO">
+        update warehouse_info
+        <set>
+            <if test="wareName != null and wareName != ''">
+                WARE_NAME = #{wareName},
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <select id="getWarehouse" resultType="com.coolk1ng.pojo.vo.WarehouseVO" parameterType="java.lang.Integer">
+        SELECT a.*, b.*
+        FROM warehouse_order a
+                 LEFT JOIN warehouse_info b ON a.WAREHOUSE = b.ID
+        WHERE a.ID = #{id}
+    </select>
+
+    <!--通过主键删除-->
+    <delete id="deleteWareOrder" parameterType="java.lang.Integer">
+        delete
+        from warehouse_order
+        where ID = #{id}
+    </delete>
+
+    <delete id="deleteWareInfo" parameterType="java.lang.Integer">
+        delete
+        from warehouse_info
+        where ID = #{id}
+    </delete>
+
+</mapper>
+

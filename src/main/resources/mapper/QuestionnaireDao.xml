@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolk1ng.mapper.QuestionnaireMapper">
+
+    <resultMap type="com.coolk1ng.pojo.entity.Questionnaire" id="QuestionnaireMap">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="name" column="NAME" jdbcType="VARCHAR"/>
+        <result property="phone" column="PHONE" jdbcType="VARCHAR"/>
+        <result property="email" column="EMAIL" jdbcType="VARCHAR"/>
+        <result property="qDate" column="Q_DATE" jdbcType="TIMESTAMP"/>
+        <result property="content" column="CONTENT" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <!--列表-->
+    <select id="getQuestionnaireList" resultType="com.coolk1ng.pojo.entity.Questionnaire"
+            parameterType="com.coolk1ng.pojo.dto.QuestionnaireDTO">
+        select
+        ID, NAME, PHONE, EMAIL, Q_DATE, CONTENT
+        from questionnaire
+        <where>
+            <if test="name != null and name != ''">
+                and NAME LIKE CONCAT('%',#{name},'%')
+            </if>
+            <if test="phone != null and phone != ''">
+                and PHONE = #{phone}
+            </if>
+            <if test="questionnaireStartTime != null">
+                and Q_DATE <![CDATA[>]]> #{questionnaireStartTime}
+            </if>
+            <if test="questionnaireEndTime != null">
+                and Q_DATE <![CDATA[<]]> #{questionnaireEndTime}
+            </if>
+        </where>
+        ORDER BY Q_DATE DESC
+    </select>
+
+    <!--新增所有列-->
+    <insert id="saveQuestionnaire" keyProperty="id" useGeneratedKeys="true"
+            parameterType="com.coolk1ng.pojo.dto.QuestionnaireDTO">
+        insert into questionnaire(NAME, PHONE, EMAIL, Q_DATE, CONTENT)
+        values (#{name}, #{phone}, #{email}, #{qDate}, #{content})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="updateQuestionnaire" parameterType="com.coolk1ng.pojo.dto.QuestionnaireDTO">
+        update questionnaire
+        <set>
+            <if test="name != null and name != ''">
+                NAME = #{name},
+            </if>
+            <if test="phone != null and phone != ''">
+                PHONE = #{phone},
+            </if>
+            <if test="email != null and email != ''">
+                EMAIL = #{email},
+            </if>
+            <if test="qDate != null">
+                Q_DATE = #{qDate},
+            </if>
+            <if test="content != null and content != ''">
+                CONTENT = #{content},
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteQuestionnaire" parameterType="java.lang.Integer">
+        delete
+        from questionnaire
+        where ID = #{id}
+    </delete>
+
+    <select id="getQuestionnaireById" parameterType="java.lang.Integer"
+            resultType="com.coolk1ng.pojo.entity.Questionnaire">
+        SELECT *
+        FROM questionnaire
+        WHERE ID = #{id}
+    </select>
+</mapper>
+
