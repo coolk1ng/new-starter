@@ -19,5 +19,7 @@ public interface RefundTaxMapper {
     void saveRefundTax(RefundTax refundTax);
 
     List<RefundTax> getRefundTaxByIds(List<Integer> ids);
+
+    void updateRefundTax (List<RefundTax> list);
 }
 

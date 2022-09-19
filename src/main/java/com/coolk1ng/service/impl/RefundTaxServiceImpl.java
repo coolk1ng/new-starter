@@ -1,5 +1,6 @@
 package com.coolk1ng.service.impl;
 
+import com.coolk1ng.base.ResResult;
 import com.coolk1ng.mapper.RefundTaxMapper;
 import com.coolk1ng.pojo.entity.RefundTax;
 import com.coolk1ng.service.RefundTaxService;
@@ -44,7 +45,8 @@ public class RefundTaxServiceImpl implements RefundTaxService {
     }
 
     @Override
-    public List<RefundTax> getRefundTaxByIds(String ids) {
+    public ResResult getRefundTaxByIds(String ids) throws Exception {
+        Boolean flag = true;
         ArrayList<Integer> arrayList = new ArrayList<>();
         String[] split = ids.split(",");
         for (String s : split) {
@@ -54,9 +56,9 @@ public class RefundTaxServiceImpl implements RefundTaxService {
         if (list != null) {
             long count = list.stream().map(RefundTax::getProjectId).distinct().count();
             if (count > 1 ) {
-
+                return ResResult.fail("选中数据不符合");
             }
         }
-            return list;
+            return ResResult.success(list);
     }
 }

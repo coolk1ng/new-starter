@@ -1,6 +1,7 @@
 package com.coolk1ng.service;
 
 
+import com.coolk1ng.base.ResResult;
 import com.coolk1ng.pojo.dto.WarehouseDTO;
 import com.coolk1ng.pojo.vo.WarehouseVO;
 import com.github.pagehelper.PageInfo;
@@ -25,8 +26,8 @@ public interface WarehouseService {
      * @param warehouseDTO
      * @return String
      */
-    String saveAndUpdateWarehouse(WarehouseDTO warehouseDTO);
+    ResResult saveAndUpdateWarehouse(WarehouseDTO warehouseDTO);
 
-    void deleteWarehouse(WarehouseDTO warehouseDTO);
+    ResResult deleteWarehouse(WarehouseDTO warehouseDTO);
 
 }

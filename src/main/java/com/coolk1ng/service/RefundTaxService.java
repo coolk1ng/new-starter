@@ -1,9 +1,8 @@
 package com.coolk1ng.service;
 
+import com.coolk1ng.base.ResResult;
 import com.coolk1ng.pojo.entity.RefundTax;
 import com.github.pagehelper.PageInfo;
-
-import java.util.List;
 
 /**
  * 退税(RefundTax)表服务接口
@@ -17,6 +16,6 @@ public interface RefundTaxService {
 
     void saveRefundTax(RefundTax refundTax);
 
-    List<RefundTax> getRefundTaxByIds(String ids);
+    ResResult getRefundTaxByIds(String ids) throws Exception;
 
 }

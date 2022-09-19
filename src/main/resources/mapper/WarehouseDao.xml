@@ -4,12 +4,12 @@
 
     <select id="getWarehouseList" resultType="com.coolk1ng.pojo.vo.WarehouseVO"
             parameterType="com.coolk1ng.pojo.dto.WarehouseDTO">
-        SELECT a.GOODS_NAME, a.QUANTITY, b.WARE_NAME
+        SELECT a.ID, a.GOODS_NAME, a.QUANTITY, b.WARE_NAME
         FROM warehouse_order a
         LEFT JOIN warehouse_info b ON a.WAREHOUSE = b.ID
         <where>
             <if test="goodsName != null and goodsName != '' ">
-                and GOOD_NAME LIKE CONCAT('%',#{goodsName},'%')
+                and GOODS_NAME LIKE CONCAT('%',#{goodsName},'%')
             </if>
             <if test="warehouse != null and warehouse != ''">
                 and WAREHOUSE = #{warehouse}

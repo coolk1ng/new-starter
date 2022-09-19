@@ -2,22 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.coolk1ng.mapper.RefundTaxMapper">
 
-    <resultMap type="com.coolk1ng.entity.RefundTax" id="RefundTaxMap">
-        <result property="id" column="ID" jdbcType="INTEGER"/>
-        <result property="projectId" column="PROJECT_ID" jdbcType="INTEGER"/>
-        <result property="brandAttribute" column="BRAND_ATTRIBUTE" jdbcType="VARCHAR"/>
-        <result property="demandName" column="DEMAND_NAME" jdbcType="VARCHAR"/>
-        <result property="supplier" column="SUPPLIER" jdbcType="VARCHAR"/>
-        <result property="receiptName" column="RECEIPT_NAME" jdbcType="VARCHAR"/>
-        <result property="invoiceAmount" column="INVOICE_AMOUNT" jdbcType="VARCHAR"/>
-        <result property="invoiceTime" column="INVOICE_TIME" jdbcType="TIMESTAMP"/>
-        <result property="taxRate" column="TAX_RATE" jdbcType="INTEGER"/>
-        <result property="theoryRefundTax" column="THEORY_REFUND_TAX" jdbcType="VARCHAR"/>
-        <result property="actualRefundTax" column="ACTUAL_REFUND_TAX" jdbcType="VARCHAR"/>
-        <result property="canRefundTax" column="CAN_REFUND_TAX" jdbcType="INTEGER"/>
-        <result property="state" column="STATE" jdbcType="INTEGER"/>
-    </resultMap>
-
     <!--查询单个-->
     <select id="queryById" parameterType="com.coolk1ng.pojo.entity.RefundTax"
             resultType="com.coolk1ng.pojo.entity.RefundTax">
@@ -87,6 +71,5 @@
             </if>
         </where>
     </select>
-
 </mapper>
 

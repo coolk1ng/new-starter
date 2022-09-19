@@ -1,5 +1,6 @@
 package com.coolk1ng.service.impl;
 
+import com.coolk1ng.base.ResResult;
 import com.coolk1ng.mapper.WarehouseMapper;
 import com.coolk1ng.pojo.dto.WarehouseDTO;
 import com.coolk1ng.pojo.vo.WarehouseVO;
@@ -34,26 +35,27 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     @Transactional
-    public String saveAndUpdateWarehouse(WarehouseDTO warehouseDTO) {
+    public ResResult saveAndUpdateWarehouse(WarehouseDTO warehouseDTO) {
         if (warehouseDTO.getId() == null) {
             // 新增
             warehouseMapper.saveWarehouseOrder(warehouseDTO);
             warehouseMapper.saveWarehouseInfo(warehouseDTO);
         }
         if (warehouseMapper.getWarehouse(warehouseDTO.getId()) == null) {
-            return "不存在的记录";
+            return ResResult.fail("不存在的数据");
         }
         // 编辑
         warehouseMapper.updateWarehouseInfo(warehouseDTO);
         warehouseMapper.updateWarehouseOrder(warehouseDTO);
-        return "新增,编辑成功";
+        return ResResult.success("新增,编辑成功");
     }
 
     @Override
     @Transactional
-    public void deleteWarehouse(WarehouseDTO warehouseDTO) {
+    public ResResult deleteWarehouse(WarehouseDTO warehouseDTO) {
         warehouseMapper.deleteWarehouseOrder(warehouseDTO.getId());
         WarehouseVO warehouse = warehouseMapper.getWarehouse(warehouseDTO.getId());
         warehouseMapper.deleteWarehouseInfo(warehouse.getWarehouse());
+        return ResResult.success("删除成功");
     }
 }
