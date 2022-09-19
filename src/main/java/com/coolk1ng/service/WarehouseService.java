@@ -3,8 +3,11 @@ package com.coolk1ng.service;
 
 import com.coolk1ng.base.ResResult;
 import com.coolk1ng.pojo.dto.WarehouseDTO;
+import com.coolk1ng.pojo.entity.WarehouseInfo;
 import com.coolk1ng.pojo.vo.WarehouseVO;
 import com.github.pagehelper.PageInfo;
+
+import java.util.List;
 
 /**
  * 仓库基础信息(WarehouseInfo)表服务接口
@@ -29,5 +32,7 @@ public interface WarehouseService {
     ResResult saveAndUpdateWarehouse(WarehouseDTO warehouseDTO);
 
     ResResult deleteWarehouse(WarehouseDTO warehouseDTO);
+
+    List<WarehouseInfo> getAllWarehouse();
 
 }

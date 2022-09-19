@@ -1,6 +1,7 @@
 package com.coolk1ng.mapper;
 
 import com.coolk1ng.pojo.dto.WarehouseDTO;
+import com.coolk1ng.pojo.entity.WarehouseInfo;
 import com.coolk1ng.pojo.vo.WarehouseVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -56,5 +57,10 @@ public interface WarehouseMapper {
 
     void deleteWarehouseInfo(Integer id);
 
+    /**
+     * 查询所有仓库
+     * @return List<WarehouseInfo>
+     */
+    List<WarehouseInfo> getAllWarehouse();
 }
 

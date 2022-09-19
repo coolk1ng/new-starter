@@ -3,6 +3,7 @@ package com.coolk1ng.service.impl;
 import com.coolk1ng.base.ResResult;
 import com.coolk1ng.mapper.WarehouseMapper;
 import com.coolk1ng.pojo.dto.WarehouseDTO;
+import com.coolk1ng.pojo.entity.WarehouseInfo;
 import com.coolk1ng.pojo.vo.WarehouseVO;
 import com.coolk1ng.service.WarehouseService;
 import com.github.pagehelper.PageHelper;
@@ -39,23 +40,29 @@ public class WarehouseServiceImpl implements WarehouseService {
         if (warehouseDTO.getId() == null) {
             // 新增
             warehouseMapper.saveWarehouseOrder(warehouseDTO);
-            warehouseMapper.saveWarehouseInfo(warehouseDTO);
+            //warehouseMapper.saveWarehouseInfo(warehouseDTO);
+            return ResResult.success("新增成功");
         }
         if (warehouseMapper.getWarehouse(warehouseDTO.getId()) == null) {
             return ResResult.fail("不存在的数据");
         }
         // 编辑
-        warehouseMapper.updateWarehouseInfo(warehouseDTO);
+        //warehouseMapper.updateWarehouseInfo(warehouseDTO);
         warehouseMapper.updateWarehouseOrder(warehouseDTO);
-        return ResResult.success("新增,编辑成功");
+        return ResResult.success("编辑成功");
     }
 
     @Override
     @Transactional
     public ResResult deleteWarehouse(WarehouseDTO warehouseDTO) {
         warehouseMapper.deleteWarehouseOrder(warehouseDTO.getId());
-        WarehouseVO warehouse = warehouseMapper.getWarehouse(warehouseDTO.getId());
-        warehouseMapper.deleteWarehouseInfo(warehouse.getWarehouse());
+        //WarehouseVO warehouse = warehouseMapper.getWarehouse(warehouseDTO.getId());
+        //warehouseMapper.deleteWarehouseInfo(warehouse.getWarehouse());
         return ResResult.success("删除成功");
+    }
+
+    @Override
+    public List<WarehouseInfo> getAllWarehouse() {
+        return warehouseMapper.getAllWarehouse();
     }
 }

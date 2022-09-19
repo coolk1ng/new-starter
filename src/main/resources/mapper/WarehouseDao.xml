@@ -4,7 +4,7 @@
 
     <select id="getWarehouseList" resultType="com.coolk1ng.pojo.vo.WarehouseVO"
             parameterType="com.coolk1ng.pojo.dto.WarehouseDTO">
-        SELECT a.ID, a.GOODS_NAME, a.QUANTITY, b.WARE_NAME
+        SELECT a.ID, a.GOODS_NAME, a.WAREHOUSE, a.QUANTITY, b.WARE_NAME
         FROM warehouse_order a
         LEFT JOIN warehouse_info b ON a.WAREHOUSE = b.ID
         <where>
@@ -65,14 +65,20 @@
         WHERE a.ID = #{id}
     </select>
 
+    <!--查询所有仓库-->
+    <select id="getAllWarehouse" resultType="com.coolk1ng.pojo.entity.WarehouseInfo">
+        SELECT ID, WARE_NAME
+        FROM warehouse_info
+    </select>
+
     <!--通过主键删除-->
-    <delete id="deleteWareOrder" parameterType="java.lang.Integer">
+    <delete id="deleteWarehouseOrder" parameterType="java.lang.Integer">
         delete
         from warehouse_order
         where ID = #{id}
     </delete>
 
-    <delete id="deleteWareInfo" parameterType="java.lang.Integer">
+    <delete id="deleteWarehouseInfo" parameterType="java.lang.Integer">
         delete
         from warehouse_info
         where ID = #{id}

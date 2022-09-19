@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022-09-19 14:36:00
  */
 @RestController
-@RequestMapping(value = "/warehouseInfo")
+@RequestMapping(value = "/warehouse")
 public class WarehouseController {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(WarehouseController.class);
@@ -41,7 +41,13 @@ public class WarehouseController {
 
     @PostMapping(value = "/deleteWarehouse")
     public ResResult deleteWarehouse(@RequestBody WarehouseDTO warehouseDTO) {
+        LOGGER.info("删除的记录id:{}",JSON.toJSONString(warehouseDTO.getId()));
         return warehouseService.deleteWarehouse(warehouseDTO);
+    }
+
+    @PostMapping(value = "/getAllWarehouse")
+    public ResResult getAllWarehouse() {
+        return ResResult.success(warehouseService.getAllWarehouse());
     }
 }
 
