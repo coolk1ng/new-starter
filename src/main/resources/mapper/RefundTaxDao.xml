@@ -6,7 +6,7 @@
             parameterType="com.coolk1ng.pojo.entity.RefundTax">
         select
         ID, PROJECT_ID, BRAND_ATTRIBUTE, DEMAND_NAME, SUPPLIER, RECEIPT_NAME, INVOICE_AMOUNT, INVOICE_TIME, TAX_RATE,
-        THEORY_REFUND_TAX, ACTUAL_REFUND_TAX, CAN_REFUND_TAX, STATE
+        ACTUAL_REFUND_TAX, CAN_REFUND_TAX, STATE
         from refund_tax
         <where>
             <if test="projectId != null">

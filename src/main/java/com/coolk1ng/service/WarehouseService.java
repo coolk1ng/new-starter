@@ -31,7 +31,7 @@ public interface WarehouseService {
      */
     ResResult saveAndUpdateWarehouse(WarehouseDTO warehouseDTO);
 
-    ResResult deleteWarehouse(WarehouseDTO warehouseDTO);
+    ResResult deleteWarehouse(Integer[] ids);
 
     List<WarehouseInfo> getAllWarehouse();
 

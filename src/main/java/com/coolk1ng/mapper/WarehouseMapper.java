@@ -53,7 +53,7 @@ public interface WarehouseMapper {
 
     WarehouseVO getWarehouse(Integer id);
 
-    void deleteWarehouseOrder(Integer id);
+    void deleteWarehouseOrder(Integer[] ids);
 
     void deleteWarehouseInfo(Integer id);
 

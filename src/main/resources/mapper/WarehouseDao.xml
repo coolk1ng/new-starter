@@ -11,7 +11,7 @@
             <if test="goodsName != null and goodsName != '' ">
                 and GOODS_NAME LIKE CONCAT('%',#{goodsName},'%')
             </if>
-            <if test="warehouse != null and warehouse != ''">
+            <if test="warehouse != null">
                 and WAREHOUSE = #{warehouse}
             </if>
         </where>
@@ -67,15 +67,18 @@
 
     <!--查询所有仓库-->
     <select id="getAllWarehouse" resultType="com.coolk1ng.pojo.entity.WarehouseInfo">
-        SELECT ID, WARE_NAME
+        SELECT DISTINCT WARE_NAME, ID
         FROM warehouse_info
     </select>
 
     <!--通过主键删除-->
-    <delete id="deleteWarehouseOrder" parameterType="java.lang.Integer">
+    <delete id="deleteWarehouseOrder">
         delete
         from warehouse_order
-        where ID = #{id}
+        where ID IN
+        <foreach collection="array" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
     </delete>
 
     <delete id="deleteWarehouseInfo" parameterType="java.lang.Integer">

@@ -19,6 +19,11 @@ public interface RefundTaxService {
 
     void saveRefundTax(RefundTax refundTax);
 
+    /**
+     * 退税记账列表
+     * @param ids
+     * @return ResResult
+     */
     ResResult getRefundTaxByIds(String ids);
 
     /** 
@@ -28,5 +33,10 @@ public interface RefundTaxService {
      */
     BigDecimal getTheoryRefundTaxByInvoiceAmountAndTaxRate(RefundTaxDTO refundTaxDTO);
 
+    /** 
+     * 退税
+     * @param idAndActualRefundTax 
+     * @return ResResult
+     */
     ResResult updateRefundTax(String idAndActualRefundTax);
 }

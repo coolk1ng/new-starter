@@ -54,8 +54,8 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     @Transactional
-    public ResResult deleteWarehouse(WarehouseDTO warehouseDTO) {
-        warehouseMapper.deleteWarehouseOrder(warehouseDTO.getId());
+    public ResResult deleteWarehouse(Integer[] ids) {
+        warehouseMapper.deleteWarehouseOrder(ids);
         //WarehouseVO warehouse = warehouseMapper.getWarehouse(warehouseDTO.getId());
         //warehouseMapper.deleteWarehouseInfo(warehouse.getWarehouse());
         return ResResult.success("删除成功");

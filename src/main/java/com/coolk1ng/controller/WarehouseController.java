@@ -8,13 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 仓库基础信息(WarehouseInfo)表控制层
@@ -51,9 +49,9 @@ public class WarehouseController {
     }
 
     @PostMapping(value = "/deleteWarehouse")
-    public ResResult deleteWarehouse(@RequestBody WarehouseDTO warehouseDTO) {
-        LOGGER.info("删除的记录id:{}",JSON.toJSONString(warehouseDTO.getId()));
-        return warehouseService.deleteWarehouse(warehouseDTO);
+    public ResResult deleteWarehouse(Integer[] ids) {
+        //LOGGER.info("删除的记录id:{}",JSON.toJSONString(warehouseDTO.getId()));
+        return warehouseService.deleteWarehouse(ids);
     }
 
     @PostMapping(value = "/getAllWarehouse")
