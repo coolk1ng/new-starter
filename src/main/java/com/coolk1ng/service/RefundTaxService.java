@@ -1,8 +1,11 @@
 package com.coolk1ng.service;
 
 import com.coolk1ng.base.ResResult;
+import com.coolk1ng.pojo.dto.RefundTaxDTO;
 import com.coolk1ng.pojo.entity.RefundTax;
 import com.github.pagehelper.PageInfo;
+
+import java.math.BigDecimal;
 
 /**
  * 退税(RefundTax)表服务接口
@@ -16,6 +19,14 @@ public interface RefundTaxService {
 
     void saveRefundTax(RefundTax refundTax);
 
-    ResResult getRefundTaxByIds(String ids) throws Exception;
+    ResResult getRefundTaxByIds(String ids);
 
+    /** 
+     * 计算理论退税
+     * @param refundTaxDTO 
+     * @return BigDecimal
+     */
+    BigDecimal getTheoryRefundTaxByInvoiceAmountAndTaxRate(RefundTaxDTO refundTaxDTO);
+
+    ResResult updateRefundTax(String idAndActualRefundTax);
 }

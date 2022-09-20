@@ -1,6 +1,7 @@
 package com.coolk1ng.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.coolk1ng.base.ResResult;
 import com.coolk1ng.pojo.dto.QuestionnaireDTO;
 import com.coolk1ng.pojo.entity.Questionnaire;
 import com.coolk1ng.service.QuestionnaireService;
@@ -10,12 +11,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 
 /**
  * 问卷调查表(Questionnaire)表控制层
@@ -39,9 +43,16 @@ public class QuestionnaireController {
     }
 
     @PostMapping(value = "/saveAndUpdateQuestionnaire")
-    public ResponseEntity<String> saveAndUpdateQuestionnaire(@RequestBody @Valid QuestionnaireDTO questionnaireDTO, BindingResult bindingResult) {
+    public ResResult saveAndUpdateQuestionnaire(@RequestBody @Valid QuestionnaireDTO questionnaireDTO, BindingResult bindingResult) {
         //LOGGER.info("新增编辑入参:{}", JSON.toJSONString(questionnaireDTO));
-       return ResponseEntity.ok(questionnaireService.saveAndUpdateQuestionnaire(questionnaireDTO));
+        if (bindingResult.hasErrors()) {
+            ArrayList<String> errors = new ArrayList<>();
+            bindingResult.getAllErrors().forEach(item -> {
+                errors.add(item.getDefaultMessage());
+            });
+            return ResResult.fail(errors);
+        }
+       return questionnaireService.saveAndUpdateQuestionnaire(questionnaireDTO);
     }
 
     @PostMapping(value = "deleteQuestionnaire")

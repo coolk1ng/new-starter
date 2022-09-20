@@ -80,4 +80,8 @@ public class ResResult {
     public static ResResult fail(String errorCode, String message, Object data) {
         return new ResResult(false, data, errorCode, message);
     }
+
+    public static ResResult fail( Object data) {
+        return new ResResult(false, data, "-1", "fail");
+    }
 }

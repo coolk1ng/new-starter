@@ -8,6 +8,9 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -25,28 +28,26 @@ public class QuestionnaireDTO extends PageEntity {
     private Integer id;
 
     @NotNull(message = "姓名不能为空")
-    @Length(min = 1,max = 20,message = "不能超过20字符以内")
+    @Length(max = 20,message = "20个字符以内")
+    @NotBlank
     private String name;
 
     @NotNull(message = "电话不能为空")
-    @Length(min = 1,max = 11,message = "电话不能超过11位")
     private String phone;
 
+    @Email
     private String email;
 
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @NotNull(message = "日期不为空")
     private Date qDate;
 
-    @Length(min = 1,max = 200,message = "200字符以内")
+    @Length(max = 200,message = "200字符以内")
     private String content;
 
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date questionnaireStartTime;
 
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date questionnaireEndTime;
 }

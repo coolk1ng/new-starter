@@ -1,5 +1,6 @@
 package com.coolk1ng.service;
 
+import com.coolk1ng.base.ResResult;
 import com.coolk1ng.pojo.dto.QuestionnaireDTO;
 import com.coolk1ng.pojo.entity.Questionnaire;
 import com.github.pagehelper.PageInfo;
@@ -24,7 +25,7 @@ public interface QuestionnaireService {
      * @param questionnaireDTO
      * @return void
      */
-String saveAndUpdateQuestionnaire(QuestionnaireDTO questionnaireDTO);
+    ResResult saveAndUpdateQuestionnaire(QuestionnaireDTO questionnaireDTO);
 
     /**
      * 删除

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.print.DocFlavor;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.io.Serializable;
@@ -25,7 +26,7 @@ public class RefundTax extends PageEntity implements Serializable {
     
     private Integer id;
     
-    private Integer projectId;
+    private String projectId;
     
     private String brandAttribute;
     
@@ -37,14 +38,16 @@ public class RefundTax extends PageEntity implements Serializable {
     
     private BigDecimal invoiceAmount;
 
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
     private Date invoiceTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
     private Date invoiceTimeStart;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
     private Date invoiceTimeEnd;
 
     private Integer taxRate;
