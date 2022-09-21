@@ -1,11 +1,9 @@
 package com.coolk1ng.pojo.dto;
 
 import com.coolk1ng.base.PageEntity;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.Date;
 
