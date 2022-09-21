@@ -39,15 +39,8 @@ public class RefundTax extends PageEntity implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal invoiceAmount;
 
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy/MM/dd")
     private Date invoiceTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date invoiceTimeStart;
-
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date invoiceTimeEnd;
 
     private Integer taxRate;
 

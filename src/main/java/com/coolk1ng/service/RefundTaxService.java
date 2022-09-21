@@ -16,9 +16,9 @@ import java.util.List;
  */
 public interface RefundTaxService {
 
-    PageInfo<RefundTax> getRefundTaxList(RefundTax refundTax);
+    PageInfo<RefundTax> getRefundTaxList(RefundTaxDTO refundTaxDTO);
 
-    void saveRefundTax(RefundTax refundTax);
+    void saveRefundTax(RefundTaxDTO refundTaxDTO);
 
     /**
      * 退税记账列表

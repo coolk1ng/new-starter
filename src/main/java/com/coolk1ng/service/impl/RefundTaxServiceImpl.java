@@ -8,6 +8,7 @@ import com.coolk1ng.service.RefundTaxService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,10 +33,10 @@ public class RefundTaxServiceImpl implements RefundTaxService {
     private RefundTaxMapper refundTaxMapper;
 
     @Override
-    public PageInfo<RefundTax> getRefundTaxList(RefundTax refundTax) {
-        PageHelper.startPage(refundTax.getPageNum() == null ? 1 : refundTax.getPageNum()
-                , refundTax.getPageSize() == null ? 5 : refundTax.getPageSize());
-        List<RefundTax> refundTaxList = refundTaxMapper.getRefundTaxList(refundTax);
+    public PageInfo<RefundTax> getRefundTaxList(RefundTaxDTO refundTaxDTO) {
+        PageHelper.startPage(refundTaxDTO.getPageNum() == null ? 1 : refundTaxDTO.getPageNum()
+                , refundTaxDTO.getPageSize() == null ? 5 : refundTaxDTO.getPageSize());
+        List<RefundTax> refundTaxList = refundTaxMapper.getRefundTaxList(refundTaxDTO);
         refundTaxList.forEach(item -> {
             BigDecimal decimal = item.getInvoiceAmount().multiply(new BigDecimal(item.getTaxRate()))
                     .divide(new BigDecimal(100), 2, RoundingMode.UP);
@@ -46,7 +47,9 @@ public class RefundTaxServiceImpl implements RefundTaxService {
 
     @Override
     @Transactional
-    public void saveRefundTax(RefundTax refundTax) {
+    public void saveRefundTax(RefundTaxDTO refundTaxDTO) {
+        RefundTax refundTax = new RefundTax();
+        BeanUtils.copyProperties(refundTaxDTO,refundTax);
         refundTax.setActualRefundTax(new BigDecimal(0).setScale(2, RoundingMode.UP));
         refundTax.setState(0);
         refundTaxMapper.saveRefundTax(refundTax);

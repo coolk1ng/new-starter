@@ -15,7 +15,7 @@ import java.util.List;
 @Mapper
 public interface RefundTaxMapper {
 
-    List<RefundTax> getRefundTaxList(RefundTax refundTax);
+    List<RefundTax> getRefundTaxList(RefundTaxDTO refundTaxDTO);
 
     void saveRefundTax(RefundTax refundTax);
 

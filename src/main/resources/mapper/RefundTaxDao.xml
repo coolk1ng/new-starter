@@ -3,7 +3,7 @@
 <mapper namespace="com.coolk1ng.mapper.RefundTaxMapper">
     <!--查询指定行数据-->
     <select id="getRefundTaxList" resultType="com.coolk1ng.pojo.entity.RefundTax"
-            parameterType="com.coolk1ng.pojo.entity.RefundTax">
+            parameterType="com.coolk1ng.pojo.dto.RefundTaxDTO">
         select
         ID, PROJECT_ID, BRAND_ATTRIBUTE, DEMAND_NAME, SUPPLIER, RECEIPT_NAME, INVOICE_AMOUNT, INVOICE_TIME, TAX_RATE,
         ACTUAL_REFUND_TAX, CAN_REFUND_TAX, STATE
@@ -16,10 +16,10 @@
                 and SUPPLIER LIKE CONCAT('%',#{supplier},'%')
             </if>
             <if test="invoiceTimeStart != null">
-                and INVOICE_TIME <![CDATA[>]]>  #{invoiceTime}
+                and INVOICE_TIME <![CDATA[>]]>  #{invoiceTimeStart}
             </if>
             <if test="invoiceTimeEnd != null">
-                and INVOICE_TIME <![CDATA[<]]>  #{invoiceTime}
+                and INVOICE_TIME <![CDATA[<]]>  #{invoiceTimeEnd}
             </if>
         </where>
     </select>
