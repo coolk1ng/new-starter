@@ -6,6 +6,7 @@ import com.coolk1ng.pojo.entity.RefundTax;
 import com.github.pagehelper.PageInfo;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 退税(RefundTax)表服务接口
@@ -24,7 +25,7 @@ public interface RefundTaxService {
      * @param ids
      * @return ResResult
      */
-    ResResult getRefundTaxByIds(String ids);
+    ResResult getRefundTaxByIds(Integer[] ids);
 
     /** 
      * 计算理论退税
@@ -35,8 +36,8 @@ public interface RefundTaxService {
 
     /** 
      * 退税
-     * @param idAndActualRefundTax 
+     * @param list
      * @return ResResult
      */
-    ResResult updateRefundTax(String idAndActualRefundTax);
+    ResResult updateRefundTax(List<RefundTaxDTO> list);
 }

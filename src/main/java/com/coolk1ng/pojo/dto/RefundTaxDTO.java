@@ -1,9 +1,8 @@
 package com.coolk1ng.pojo.dto;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 /**
@@ -13,8 +12,12 @@ import java.math.BigDecimal;
 @Data
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class RefundTaxDTO {
 
+    private Integer id;
     private BigDecimal invoiceAmount;
     private Integer taxRate;
+    private BigDecimal actualRefundTax;
 }

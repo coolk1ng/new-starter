@@ -35,25 +35,26 @@ public class RefundTax extends PageEntity implements Serializable {
     private String supplier;
     
     private String receiptName;
-    
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal invoiceAmount;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date invoiceTime;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date invoiceTimeStart;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date invoiceTimeEnd;
 
     private Integer taxRate;
-    
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal theoryRefundTax;
-    
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal actualRefundTax;
     
     private Integer canRefundTax;

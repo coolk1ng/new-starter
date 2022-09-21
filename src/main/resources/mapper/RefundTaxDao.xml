@@ -9,7 +9,7 @@
         ACTUAL_REFUND_TAX, CAN_REFUND_TAX, STATE
         from refund_tax
         <where>
-            <if test="projectId != null">
+            <if test="projectId != null and projectId !=''">
                 and PROJECT_ID = #{projectId}
             </if>
             <if test="supplier != null and supplier != ''">

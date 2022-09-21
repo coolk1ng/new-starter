@@ -8,10 +8,9 @@ import com.coolk1ng.service.RefundTaxService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 退税(RefundTax)表控制层
@@ -42,7 +41,7 @@ public class RefundTaxController {
     }
 
     @PostMapping(value = "/getRefundTaxByIds")
-    public ResResult getRefundTaxByIds(String ids) {
+    public ResResult getRefundTaxByIds(Integer[] ids) {
         return refundTaxService.getRefundTaxByIds(ids);
     }
 
@@ -52,8 +51,8 @@ public class RefundTaxController {
     }
 
     @PostMapping(value = "/updateRefundTax")
-    public ResResult updateRefundTax(String idAndActualRefundTax) {
-        return refundTaxService.updateRefundTax(idAndActualRefundTax);
+    public ResResult updateRefundTax(@RequestBody List<RefundTaxDTO> list) {
+        return refundTaxService.updateRefundTax(list);
     }
 }
 

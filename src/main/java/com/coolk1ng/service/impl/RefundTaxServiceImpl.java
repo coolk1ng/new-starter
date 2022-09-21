@@ -7,6 +7,7 @@ import com.coolk1ng.pojo.entity.RefundTax;
 import com.coolk1ng.service.RefundTaxService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -51,13 +53,14 @@ public class RefundTaxServiceImpl implements RefundTaxService {
     }
 
     @Override
-    public ResResult getRefundTaxByIds(String ids){
+    public ResResult getRefundTaxByIds(Integer[] ids){
         AtomicBoolean flag = new AtomicBoolean(true);
-        ArrayList<Integer> arrayList = new ArrayList<>();
+        /*ArrayList<Integer> arrayList = new ArrayList<>();
         String[] split = ids.split(",");
         for (String s : split) {
             arrayList.add(Integer.parseInt(s));
-        }
+        }*/
+        List<Integer> arrayList = Arrays.asList(ids);
         List<RefundTax> list = refundTaxMapper.getRefundTaxByIds(arrayList);
         if (list != null) {
             // 编号校验
@@ -85,8 +88,8 @@ public class RefundTaxServiceImpl implements RefundTaxService {
     }
 
     @Override
-    public ResResult updateRefundTax(String idAndActualRefundTax) {
-        ArrayList<RefundTax> list = new ArrayList<>();
+    public ResResult updateRefundTax(List<RefundTaxDTO> list) {
+        /*ArrayList<RefundTax> list = new ArrayList<>();
         String[] split = idAndActualRefundTax.split(":");
         for (String s : split) {
             String[] arr = s.split(",");
@@ -95,7 +98,7 @@ public class RefundTaxServiceImpl implements RefundTaxService {
             refundTax.setActualRefundTax(new BigDecimal(arr[1]));
             //System.out.println(refundTax);
             list.add(refundTax);
-        }
+        }*/
         refundTaxMapper.updateRefundTax(list);
         return ResResult.success("退税成功");
     }
