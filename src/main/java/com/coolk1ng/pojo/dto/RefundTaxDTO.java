@@ -27,9 +27,9 @@ public class RefundTaxDTO extends PageEntity {
     private Integer taxRate;
     private BigDecimal actualRefundTax;
 
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date invoiceTimeStart;
 
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date invoiceTimeEnd;
 }

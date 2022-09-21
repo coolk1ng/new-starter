@@ -26,10 +26,10 @@
                 and PHONE = #{phone}
             </if>
             <if test="questionnaireStartTime != null">
-                and Q_DATE <![CDATA[>]]> #{questionnaireStartTime}
+                and Q_DATE <![CDATA[>=]]> #{questionnaireStartTime}
             </if>
             <if test="questionnaireEndTime != null">
-                and Q_DATE <![CDATA[<]]> #{questionnaireEndTime}
+                and Q_DATE <![CDATA[<=]]> #{questionnaireEndTime}
             </if>
         </where>
         ORDER BY Q_DATE DESC

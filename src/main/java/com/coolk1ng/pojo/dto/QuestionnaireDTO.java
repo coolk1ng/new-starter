@@ -45,9 +45,9 @@ public class QuestionnaireDTO extends PageEntity {
     @Length(max = 200,message = "200字符以内")
     private String content;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date questionnaireStartTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date questionnaireEndTime;
 }

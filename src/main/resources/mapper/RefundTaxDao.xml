@@ -16,10 +16,10 @@
                 and SUPPLIER LIKE CONCAT('%',#{supplier},'%')
             </if>
             <if test="invoiceTimeStart != null">
-                and INVOICE_TIME <![CDATA[>]]>  #{invoiceTimeStart}
+                and INVOICE_TIME <![CDATA[>=]]>  #{invoiceTimeStart}
             </if>
             <if test="invoiceTimeEnd != null">
-                and INVOICE_TIME <![CDATA[<]]>  #{invoiceTimeEnd}
+                and INVOICE_TIME <![CDATA[<=]]>  #{invoiceTimeEnd}
             </if>
         </where>
     </select>
