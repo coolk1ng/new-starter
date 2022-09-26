@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolk1ng.mapper.StoreHouseMapper">
+    <!--货号列表(名字,总库存)-->
+    <select id="getProductBaseList" resultType="com.coolk1ng.pojo.vo.ProductVO">
+        SELECT a.NAME, b.PRODUCT_ID AS id, IFNULL(SUM(c.INBOUND_QUANTITY), 0) AS storeHouseTotal
+        FROM product a
+                 INNER JOIN `order` b ON a.ID = b.PRODUCT_ID
+                 INNER JOIN inbound c ON b.ID = c.ORDER_ID
+        GROUP BY PRODUCT_ID
+    </select>
+
+    <select id="getRemainTotalList" resultType="com.coolk1ng.pojo.vo.ProductVO">
+        SELECT PRODUCT_ID AS id, sum(e.total) AS remainTotal
+        FROM (SELECT d.order_id, sum(d.total) AS total
+              FROM (SELECT a.ORDER_ID                                                          AS order_id,
+                           a.INBOUND_QUANTITY - b.INBOUND_QUANTITY - c.OUTBOUND_QUANTITY_TOTAL AS total
+                    FROM inbound a
+                             INNER JOIN defective b ON a.id = b.INBOUND_ID
+                             INNER JOIN (SELECT INBOUND_ID, sum(OUTBOUND_QUANTITY) AS OUTBOUND_QUANTITY_TOTAL
+                                         FROM outbound
+                                         GROUP BY INBOUND_ID) c ON b.INBOUND_ID = c.INBOUND_ID) d
+              GROUP BY d.order_id) e
+                 INNER JOIN `order` f ON e.order_id = f.ID
+        GROUP BY PRODUCT_ID
+    </select>
+    <!--订单基本数据-->
+    <select id="getOrderBaseList" resultType="com.coolk1ng.pojo.vo.OrderVo">
+        SELECT ID, PRODUCT_ID, ORDER_QUANTITY, SUM_INBOUND_QUANTITY, SUM_OUTBOUND_QUANTITY
+        FROM `order` d
+                 LEFT JOIN (SELECT ORDER_ID,
+                                   SUM(INBOUND_QUANTITY)        AS SUM_INBOUND_QUANTITY,
+                                   SUM(c.SUM_OUTBOUND_QUANTITY) AS SUM_OUTBOUND_QUANTITY
+                            FROM inbound b
+                                     LEFT JOIN (SELECT a.INBOUND_ID, SUM(OUTBOUND_QUANTITY) AS SUM_OUTBOUND_QUANTITY
+                                                FROM outbound a
+                                                GROUP BY a.INBOUND_ID) c ON b.ID = c.INBOUND_ID
+                            GROUP BY b.ORDER_ID) e ON d.ID = e.ORDER_ID
+    </select>
+
+    <!--次品数量-->
+    <select id="getDefectiveList" resultType="com.coolk1ng.pojo.vo.OrderVo">
+        SELECT a.ORDER_ID AS id, SUM(b.INBOUND_QUANTITY) AS sumDefBoundQuantity
+        FROM inbound a
+                 INNER JOIN defective b ON a.ID = b.INBOUND_ID
+        GROUP BY a.ORDER_ID
+    </select>
+
+    <select id="getProductById" resultType="com.coolk1ng.pojo.entity.Product" parameterType="java.lang.Integer">
+        SELECT ID, NAME
+        FROM product
+        WHERE ID = #{productId}
+    </select>
+
+    <insert id="saveInboundInfo" keyProperty="id" useGeneratedKeys="true"
+            parameterType="com.coolk1ng.pojo.dto.InboundDTO">
+        INSERT INTO inbound (ORDER_ID, INBOUND_QUANTITY, DEFECTIVE_ID)
+        VALUES (#{orderId}, #{inboundQuantity}, #{defectiveId})
+    </insert>
+
+    <!--入库列表-->
+    <select id="getInboundList" resultType="com.coolk1ng.pojo.vo.InboundVO">
+        SELECT e.*, IFNULL(f.INBOUND_QUANTITY, 0) AS DEFECTIVE_QUANTITY
+        FROM (SELECT b.ID, b.ORDER_ID, b.INBOUND_QUANTITY, IFNULL(c.SUM_OUTBOUND_QUANTITY, 0) AS SUM_OUTBOUND_QUANTITY
+              FROM inbound b
+                       LEFT JOIN (SELECT a.INBOUND_ID, SUM(OUTBOUND_QUANTITY) AS SUM_OUTBOUND_QUANTITY
+                                  FROM outbound a
+                                  GROUP BY a.INBOUND_ID) c ON b.ID = c.INBOUND_ID
+              WHERE b.DEFECTIVE_ID IS NULL) e
+                 LEFT JOIN (SELECT INBOUND_ID, SUM(INBOUND_QUANTITY) AS INBOUND_QUANTITY
+                            FROM defective
+                            GROUP BY INBOUND_ID) f
+                           ON e.ID = f.INBOUND_ID
+    </select>
+    <select id="getProductInfo" resultType="com.coolk1ng.pojo.vo.ProductVO">
+        SELECT a.ID, a.NAME, b.ID AS ORDER_ID
+        FROM product a
+                 LEFT JOIN `order` b ON a.ID = b.PRODUCT_ID
+    </select>
+
+    <insert id="saveDefectiveInfo" keyProperty="id" useGeneratedKeys="true"
+            parameterType="com.coolk1ng.pojo.dto.DefectiveDTO">
+        INSERT INTO defective (INBOUND_ID, INBOUND_QUANTITY, STATUS)
+        VALUES (#{inboundId}, #{defectiveQuantity}, #{status})
+    </insert>
+    <insert id="saveOutboundInfo" keyProperty="id" useGeneratedKeys="true"
+            parameterType="com.coolk1ng.pojo.dto.OutboundDTO">
+        INSERT INTO outbound (INBOUND_ID, OUTBOUND_QUANTITY)
+        VALUES (#{inboundId}, #{outQuantity})
+    </insert>
+
+    <select id="getDefInfoList" resultType="com.coolk1ng.pojo.vo.DefectiveVO" parameterType="com.coolk1ng.pojo.dto.DefectiveDTO">
+        SELECT a.ID, a.INBOUND_ID, a.INBOUND_QUANTITY AS defectiveQuantity, STATUS, b.ORDER_ID
+        FROM defective a
+                 INNER JOIN inbound b ON a.ID = b.DEFECTIVE_ID
+        <where>
+            <if test="status != null and status != ''">
+                AND STATUS=#{status}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateDefStatus" parameterType="com.coolk1ng.pojo.dto.DefectiveDTO">
+        UPDATE defective SET STATUS=#{status} WHERE ID = #{id}
+    </update>
+
+    <!--次品入库-->
+    <insert id="saveInboundByDef" parameterType="com.coolk1ng.pojo.dto.DefectiveDTO">
+        INSERT INTO inbound (INBOUND_QUANTITY, DEFECTIVE_ID, ORDER_ID)
+        VALUES (#{defectiveQuantity}, #{id}, #{orderId})
+    </insert>
+
+    <!--订单入库-->
+    <insert id="saveOrderToInbound" parameterType="com.coolk1ng.pojo.dto.OrderDTO">
+        INSERT INTO inbound (ORDER_ID, INBOUND_QUANTITY)
+        VALUES (#{orderId}, #{defectiveQuantity})
+    </insert>
+
+    <select id="getOrderIdByInbound" parameterType="com.coolk1ng.pojo.dto.DefectiveDTO" resultType="com.coolk1ng.pojo.entity.Inbound">
+        SELECT ORDER_ID
+        FROM inbound
+        WHERE ID = #{inboundId}
+    </select>
+</mapper>

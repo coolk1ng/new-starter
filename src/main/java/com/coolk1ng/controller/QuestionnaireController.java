@@ -11,15 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 
 /**
  * 问卷调查表(Questionnaire)表控制层
@@ -46,11 +43,10 @@ public class QuestionnaireController {
     public ResResult saveAndUpdateQuestionnaire(@RequestBody @Valid QuestionnaireDTO questionnaireDTO, BindingResult bindingResult) {
         //LOGGER.info("新增编辑入参:{}", JSON.toJSONString(questionnaireDTO));
         if (bindingResult.hasErrors()) {
-            ArrayList<String> errors = new ArrayList<>();
-            bindingResult.getAllErrors().forEach(item -> {
-                errors.add(item.getDefaultMessage());
-            });
-            return ResResult.fail(errors);
+            // ArrayList<String> errors = new ArrayList<>();
+            StringBuilder stringBuilder = new StringBuilder();
+            bindingResult.getAllErrors().forEach(item -> stringBuilder.append(item.getDefaultMessage()).append(";"));
+            return ResResult.fail(stringBuilder);
         }
        return questionnaireService.saveAndUpdateQuestionnaire(questionnaireDTO);
     }

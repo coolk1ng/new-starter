@@ -46,35 +46,32 @@ public class RefundTaxServiceImpl implements RefundTaxService {
     @Transactional
     public void saveRefundTax(RefundTaxDTO refundTaxDTO) {
         RefundTax refundTax = new RefundTax();
-        BeanUtils.copyProperties(refundTaxDTO,refundTax);
+        BeanUtils.copyProperties(refundTaxDTO, refundTax);
         refundTax.setActualRefundTax(new BigDecimal(0).setScale(2, RoundingMode.UP));
         refundTax.setState(0);
         refundTaxMapper.saveRefundTax(refundTax);
     }
 
     @Override
-    public ResResult getRefundTaxByIds(Integer[] ids){
+    public ResResult getRefundTaxByIds(Integer[] ids) {
         List<Integer> arrayList = Arrays.asList(ids);
         List<RefundTax> list = refundTaxMapper.getRefundTaxByIds(arrayList);
         if (list != null) {
             // 编号校验
             long count = list.stream().map(RefundTax::getProjectId).distinct().count();
-            if (count > 1 ) {
-                return ResResult.fail("选中数据不符合");
-            }
             // 是否可退税校验
             boolean flag = list.stream().anyMatch(item -> !item.getCanRefundTax().equals(1));
-            if (flag) {
+            if (flag || count > 1) {
                 return ResResult.fail("选中数据不符合");
             }
         }
-            return ResResult.success(list);
+        return ResResult.success(list);
     }
 
     @Override
     public BigDecimal getTheoryRefundTaxByInvoiceAmountAndTaxRate(RefundTaxDTO refundTaxDTO) {
         return refundTaxDTO.getInvoiceAmount().multiply(new BigDecimal(refundTaxDTO.getTaxRate()))
-                .divide(new BigDecimal(100),2,RoundingMode.UP);
+                .divide(new BigDecimal(100), 2, RoundingMode.UP);
     }
 
     @Override
