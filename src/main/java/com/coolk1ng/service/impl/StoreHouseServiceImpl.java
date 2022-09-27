@@ -133,6 +133,12 @@ public class StoreHouseServiceImpl implements StoreHouseService {
     @Override
     @Transactional
     public ResResult saveDefectiveInfo(DefectiveDTO defectiveDTO) {
+        // 校验改判数量
+        if (defectiveDTO.getInboundQuantity() - defectiveDTO.getSumDefQuantity()
+                - defectiveDTO.getSumOutboundQuantity()< defectiveDTO.getDefectiveQuantity()) {
+            return ResResult.fail("货品数量不够,无法改判");
+        }
+        // 改判后的次品,设置初始状态为1(新增)
         defectiveDTO.setStatus(1);
         storeHouseMapper.saveDefectiveInfo(defectiveDTO);
         return ResResult.success("改判成功");
@@ -140,6 +146,7 @@ public class StoreHouseServiceImpl implements StoreHouseService {
 
     @Override
     public ResResult saveOutboundInfo(OutboundDTO outboundDTO) {
+        // 校验入库列表出库数量
         if (outboundDTO.getInboundQuantity()
                 <= outboundDTO.getDefectiveQuantity() + outboundDTO.getSumOutboundQuantity()) {
             return ResResult.fail("出库数量不符合");
@@ -176,6 +183,8 @@ public class StoreHouseServiceImpl implements StoreHouseService {
             return ResResult.fail("已入库的次品");
         }
         storeHouseMapper.saveInboundByDef(defectiveDTO);
+        // 设置次品状态为完成
+        defectiveDTO.setStatus(2);
         storeHouseMapper.updateDefStatus(defectiveDTO);
         return ResResult.success("次品入库成功");
     }

@@ -104,7 +104,7 @@ public interface StoreHouseMapper {
     List<DefectiveVO> getDefInfoList(DefectiveDTO defectiveDTO);
 
     /**
-     * 次品出库修改状态
+     * 次品入库修改状态
      * @param defectiveDTO
      * @return void
      */

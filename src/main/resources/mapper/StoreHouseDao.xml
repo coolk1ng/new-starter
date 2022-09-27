@@ -89,10 +89,11 @@
         VALUES (#{inboundId}, #{outQuantity})
     </insert>
 
-    <select id="getDefInfoList" resultType="com.coolk1ng.pojo.vo.DefectiveVO" parameterType="com.coolk1ng.pojo.dto.DefectiveDTO">
+    <select id="getDefInfoList" resultType="com.coolk1ng.pojo.vo.DefectiveVO"
+            parameterType="com.coolk1ng.pojo.dto.DefectiveDTO">
         SELECT a.ID, a.INBOUND_ID, a.INBOUND_QUANTITY AS defectiveQuantity, STATUS, b.ORDER_ID
         FROM defective a
-                 INNER JOIN inbound b ON a.ID = b.DEFECTIVE_ID
+        LEFT JOIN inbound b ON a.INBOUND_ID=b.ID
         <where>
             <if test="status != null and status != ''">
                 AND STATUS=#{status}
@@ -101,7 +102,9 @@
     </select>
 
     <update id="updateDefStatus" parameterType="com.coolk1ng.pojo.dto.DefectiveDTO">
-        UPDATE defective SET STATUS=#{status} WHERE ID = #{id}
+        UPDATE defective
+        SET STATUS=#{status}
+        WHERE ID = #{id}
     </update>
 
     <!--次品入库-->
@@ -116,7 +119,8 @@
         VALUES (#{orderId}, #{defectiveQuantity})
     </insert>
 
-    <select id="getOrderIdByInbound" parameterType="com.coolk1ng.pojo.dto.DefectiveDTO" resultType="com.coolk1ng.pojo.entity.Inbound">
+    <select id="getOrderIdByInbound" parameterType="com.coolk1ng.pojo.dto.DefectiveDTO"
+            resultType="com.coolk1ng.pojo.entity.Inbound">
         SELECT ORDER_ID
         FROM inbound
         WHERE ID = #{inboundId}

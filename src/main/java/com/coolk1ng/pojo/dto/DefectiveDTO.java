@@ -21,4 +21,8 @@ public class DefectiveDTO extends PageEntity {
     private Integer defectiveQuantity;
     private Integer status;
     private Integer defectiveId;
+
+    private Integer inboundQuantity;
+    private Integer sumOutboundQuantity;
+    private Integer sumDefQuantity;
 }
