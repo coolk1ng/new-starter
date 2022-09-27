@@ -99,7 +99,7 @@ public class StoreHouseServiceImpl implements StoreHouseService {
         if (orderDTO.getOrderQuantity() <= sum) {
             return ResResult.fail("入库数量超出订单数量");
         }
-            storeHouseMapper.saveOrderToInbound(orderDTO);
+        storeHouseMapper.saveOrderToInbound(orderDTO);
         return ResResult.success("订单入库成功");
     }
 
@@ -141,9 +141,11 @@ public class StoreHouseServiceImpl implements StoreHouseService {
     @Override
     public ResResult saveOutboundInfo(OutboundDTO outboundDTO) {
         if (outboundDTO.getInboundQuantity()
-                < outboundDTO.getDefectiveQuantity() + outboundDTO.getSumOutboundQuantity()) {
+                <= outboundDTO.getDefectiveQuantity() + outboundDTO.getSumOutboundQuantity()) {
             return ResResult.fail("出库数量不符合");
         }
+        outboundDTO.setOutQuantity(outboundDTO.getInboundQuantity()
+                - outboundDTO.getSumOutboundQuantity() - outboundDTO.getDefectiveQuantity());
         storeHouseMapper.saveOutboundInfo(outboundDTO);
         return ResResult.success("出库成功");
     }
